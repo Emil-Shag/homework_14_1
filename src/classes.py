@@ -26,11 +26,14 @@ class Product:
 
     @classmethod
     def new_product(cls, dictionary):
-        result = cls(name=dictionary['name'],
-            description=dictionary['description'],
-            price=dictionary['price'],
-            quantity=dictionary['quantity'])
+        result = cls(
+            name=dictionary["name"],
+            description=dictionary["description"],
+            price=dictionary["price"],
+            quantity=dictionary["quantity"],
+        )
         return result
+
 
 class Category:
     """Класс для представления категорий"""
@@ -63,6 +66,5 @@ class Category:
         """Геттер для формирования списка товаров"""
         result = []
         for prod in self.__products:
-            result.append(f"Название продукта: {prod.name}, {prod.price} руб. Остаток: {prod.quantity} шт.")
+            result.append(f"{prod.name}, {prod.price} руб. Остаток: {prod.quantity} шт.")
         return result
-
