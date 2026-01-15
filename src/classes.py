@@ -28,7 +28,20 @@ class Category:
         """Метод для инициализации экземпляра класса"""
         self.name = name
         self.description = description
-        self.products = products
+        self.__products = []
 
         Category.category_count += 1
-        Category.product_count += len(products)
+
+    def add_product(self, product: Product):
+        """Метод для добавления в список товаров объект Product"""
+        self.__products.append(product)
+        Category.product_count += 1
+
+    @property
+    def products(self):
+        """Геттер для формирования списка товаров"""
+        result = []
+        for prod in self.__products:
+            result.append(f"Название продукта: {prod.name}, {prod.price} руб. Остаток: {prod.quantity} шт.")
+        return result
+
