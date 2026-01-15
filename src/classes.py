@@ -1,5 +1,6 @@
 class Product:
     """Класс для представления продуктов"""
+
     name: str
     description: str
     price: float
@@ -15,6 +16,7 @@ class Product:
 
 class Category:
     """Класс для представления категорий"""
+
     name: str
     description: str
     products: list
