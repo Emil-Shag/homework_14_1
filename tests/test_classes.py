@@ -76,17 +76,22 @@ def test_add_product(category_example):
     assert "Xiaomi 228 Turbo XXL" in category_example.products[2]
     assert Category.product_count == 3
 
+
 def test_count_products(category_example):
     assert Category.product_count == 2
+
 
 def test_count_categories(category_example):
     assert Category.category_count == 1
 
+
 def test_str_product(product_example_1):
     assert str(product_example_1) == "Samsung Galaxy S23 Ultra, 180000.0 руб. Остаток: 5 шт."
 
+
 def test_add_method_product(product_example_1, product_example_2):
     assert product_example_1 + product_example_2 == 2580000.0
+
 
 def test_str_categories(category_example):
     assert str(category_example) == "Смартфоны, количество продуктов: 13 шт."

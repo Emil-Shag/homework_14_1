@@ -42,6 +42,7 @@ class Product:
         """Подсчитывает стоимость товаров на складе"""
         return self.__price * self.quantity + other.__price * other.quantity
 
+
 class Category:
     """Класс для представления категорий"""
 
