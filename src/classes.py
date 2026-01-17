@@ -68,7 +68,7 @@ class Product(MixinPrint, BaseProduct):
     @price.setter
     def price(self, value):
         if value > 0:
-            self._price = value
+            self.__price = value
         else:
             raise ValueError("Цена должна быть положительной")
 
