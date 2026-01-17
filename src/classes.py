@@ -1,10 +1,41 @@
-class Product:
-    """Класс для представления продуктов"""
+from abc import ABC, abstractmethod
+
+class BaseProduct(ABC):
+    """Абстрактный класс для продуктов"""
 
     name: str
     description: str
     price: float
     quantity: int
+
+    @abstractmethod
+    def __init__(self, *args, **kwargs):
+        """Абстрактный инициализатор"""
+        pass
+
+    @property
+    @abstractmethod
+    def price(self):
+        pass
+
+    @price.setter
+    @abstractmethod
+    def price(self, value):
+        pass
+
+    def __add__(self, other):
+        """Подсчитывает стоимость товаров на складе"""
+        if type(self) == type(other):
+            return self.price * self.quantity + other.price * other.quantity
+        raise TypeError
+
+    def __str__(self):
+        """Отображает информацию о товаре в виде строки."""
+        return f"{self.name}, {self.price} руб. Остаток: {self.quantity} шт."
+
+
+class Product(BaseProduct):
+    """Класс для представления продуктов"""
 
     def __init__(self, name, description, price, quantity):
         """Метод для инициализации экземпляра класса"""
@@ -12,17 +43,6 @@ class Product:
         self.description = description
         self.__price = price
         self.quantity = quantity
-
-    @property
-    def price(self):
-        return self.__price
-
-    @price.setter
-    def price(self, value):
-        if value > 0:
-            self.__price = value
-        else:
-            print("Цена не должна быть нулевая или отрицательная")
 
     @classmethod
     def new_product(cls, dictionary):
@@ -34,15 +54,16 @@ class Product:
         )
         return result
 
-    def __str__(self):
-        """Отображает информацию о товаре в виде строки."""
-        return f"{self.name}, {self.__price} руб. Остаток: {self.quantity} шт."
+    @property
+    def price(self):
+        return self.__price
 
-    def __add__(self, other):
-        """Подсчитывает стоимость товаров на складе"""
-        if type(self) == type(other):
-            return self.__price * self.quantity + other.__price * other.quantity
-        raise TypeError
+    @price.setter
+    def price(self, value):
+        if value > 0:
+            self._price = value
+        else:
+            raise ValueError("Цена должна быть положительной")
 
 
 class Category:
