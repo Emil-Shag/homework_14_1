@@ -97,6 +97,7 @@ class Smartphone(Product):
     color: str
 
     def __init__(self, name, description, price, quantity, efficiency, model, memory, color):
+        """Метод для инициализации экземпляра класса: Смартфон"""
         super().__init__(name, description, price, quantity)
         self.efficiency = efficiency
         self.model = model
@@ -110,6 +111,7 @@ class LawnGrass(Product):
     color: str
 
     def __init__(self, name, description, price, quantity, country, germination_period, color):
+        """Метод для инициализации экземпляра класса: Трава газонная"""
         super().__init__(name, description, price, quantity)
         self.country = country
         self.germination_period = germination_period
