@@ -34,6 +34,14 @@ class Product:
         )
         return result
 
+    def __str__(self):
+        """Отображает информацию о товаре в виде строки."""
+        return f"{self.name}, {self.__price} руб. Остаток: {self.quantity} шт."
+
+    def __add__(self, other):
+        """Подсчитывает стоимость товаров на складе"""
+        return self.__price * self.quantity + other.__price * other.quantity
+
 
 class Category:
     """Класс для представления категорий"""
@@ -68,3 +76,10 @@ class Category:
         for prod in self.__products:
             result.append(f"{prod.name}, {prod.price} руб. Остаток: {prod.quantity} шт.")
         return result
+
+    def __str__(self):
+        """Отображает количество продуктов по категориям"""
+        result = 0
+        for product in self.__products:
+            result += product.quantity
+        return f"{self.name}, количество продуктов: {result} шт."
