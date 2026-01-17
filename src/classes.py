@@ -40,7 +40,9 @@ class Product:
 
     def __add__(self, other):
         """Подсчитывает стоимость товаров на складе"""
-        return self.__price * self.quantity + other.__price * other.quantity
+        if type(self) == type(other):
+            return self.__price * self.quantity + other.__price * other.quantity
+        raise TypeError
 
 
 class Category:
@@ -66,8 +68,11 @@ class Category:
 
     def add_product(self, product: Product):
         """Метод для добавления в список товаров объект Product"""
-        self.__products.append(product)
-        Category.product_count += 1
+        if isinstance(product, Product):
+            self.__products.append(product)
+            Category.product_count += 1
+        else:
+            raise TypeError
 
     @property
     def products(self):
@@ -83,3 +88,35 @@ class Category:
         for product in self.__products:
             result += product.quantity
         return f"{self.name}, количество продуктов: {result} шт."
+
+
+class Smartphone(Product):
+    """Класс для категории товара: Смартфон"""
+
+    efficiency: float
+    model: str
+    memory: int
+    color: str
+
+    def __init__(self, name, description, price, quantity, efficiency, model, memory, color):
+        """Метод для инициализации экземпляра класса: Смартфон"""
+        super().__init__(name, description, price, quantity)
+        self.efficiency = efficiency
+        self.model = model
+        self.memory = memory
+        self.color = color
+
+
+class LawnGrass(Product):
+    """Класс для категории товара: Трава газонная"""
+
+    country: str
+    germination_period: str
+    color: str
+
+    def __init__(self, name, description, price, quantity, country, germination_period, color):
+        """Метод для инициализации экземпляра класса: Трава газонная"""
+        super().__init__(name, description, price, quantity)
+        self.country = country
+        self.germination_period = germination_period
+        self.color = color
