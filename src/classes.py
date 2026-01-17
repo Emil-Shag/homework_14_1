@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 
+
 class BaseProduct(ABC):
     """Абстрактный класс для продуктов"""
 
@@ -33,11 +34,14 @@ class BaseProduct(ABC):
         """Отображает информацию о товаре в виде строки."""
         return f"{self.name}, {self.price} руб. Остаток: {self.quantity} шт."
 
+
 class MixinPrint:
     def __init__(self):
         print(repr(self))
+
     def __repr__(self):
         return f"{self.__class__.__name__}({self.name}, {self.description}, {self.price}, {self.quantity})"
+
 
 class Product(MixinPrint, BaseProduct):
     """Класс для представления продуктов"""

@@ -140,6 +140,7 @@ def test_invalid_add_product(category_example):
     with pytest.raises(TypeError):
         category_example.add_product(invalid_product_example)
 
+
 def test_mixin(capsys):
     Product("Samsung Galaxy S23 Ultra", "256GB, Серый цвет, 200MP камера", 180000.0, 5)
     message = capsys.readouterr()
