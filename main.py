@@ -1,4 +1,4 @@
-from src.classes import Category, Product
+from src.classes import Category, Product, Smartphone, LawnGrass
 
 if __name__ == '__main__':
     smartphone1 = Smartphone("Samsung Galaxy S23 Ultra", "256GB, Серый цвет, 200MP камера", 180000.0, 5, 95.5,
