@@ -89,8 +89,10 @@ class Category:
             result += product.quantity
         return f"{self.name}, количество продуктов: {result} шт."
 
+
 class Smartphone(Product):
     """Класс для категории товара: Смартфон"""
+
     efficiency: float
     model: str
     memory: int
@@ -104,8 +106,10 @@ class Smartphone(Product):
         self.memory = memory
         self.color = color
 
+
 class LawnGrass(Product):
     """Класс для категории товара: Трава газонная"""
+
     country: str
     germination_period: str
     color: str

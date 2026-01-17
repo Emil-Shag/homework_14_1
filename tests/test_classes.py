@@ -1,6 +1,6 @@
 import pytest
 
-from src.classes import Category, Product, Smartphone, LawnGrass
+from src.classes import Category, LawnGrass, Product, Smartphone
 
 
 @pytest.fixture(autouse=True)
@@ -96,10 +96,13 @@ def test_add_method_product(product_example_1, product_example_2):
 def test_str_categories(category_example):
     assert str(category_example) == "Смартфоны, количество продуктов: 13 шт."
 
+
 @pytest.fixture
 def smartphone_example_1():
-    return Smartphone("Samsung Galaxy S23 Ultra", "256GB, Серый цвет, 200MP камера", 180000.0, 5, 95.5,
-                         "S23 Ultra", 256, "Серый")
+    return Smartphone(
+        "Samsung Galaxy S23 Ultra", "256GB, Серый цвет, 200MP камера", 180000.0, 5, 95.5, "S23 Ultra", 256, "Серый"
+    )
+
 
 def test_smartphone_init(smartphone_example_1):
     assert smartphone_example_1.name == "Samsung Galaxy S23 Ultra"
@@ -111,9 +114,11 @@ def test_smartphone_init(smartphone_example_1):
     assert smartphone_example_1.memory == 256
     assert smartphone_example_1.color == "Серый"
 
+
 @pytest.fixture
 def lawn_grass_example_1():
     return LawnGrass("Газонная трава", "Элитная трава для газона", 500.0, 20, "Россия", "7 дней", "Зеленый")
+
 
 def test_lawn_grass_init(lawn_grass_example_1):
     assert lawn_grass_example_1.name == "Газонная трава"
@@ -124,9 +129,11 @@ def test_lawn_grass_init(lawn_grass_example_1):
     assert lawn_grass_example_1.germination_period == "7 дней"
     assert lawn_grass_example_1.color == "Зеленый"
 
+
 def test_invalid_add_method_product(smartphone_example_1, lawn_grass_example_1):
     with pytest.raises(TypeError):
         smartphone_example_1 + lawn_grass_example_1
+
 
 def test_invalid_add_product(category_example):
     invalid_product_example = "Invalid_product_example"
