@@ -58,8 +58,6 @@ class Product(MixinPrint, BaseProduct):
             raise ValueError("Товар с нулевым количеством не может быть добавлен")
         super().__init__()
 
-
-
     @classmethod
     def new_product(cls, dictionary):
         result = cls(
