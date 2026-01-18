@@ -70,7 +70,7 @@ def test_init_category(category_example):
 
 def test_add_product(category_example):
     product_example_3 = Product("Xiaomi 228 Turbo XXL", "7000 GB, Розовый цвет, 17000 MP камера", 15000, 9999)
-    category_example.add_product(product_example_3)
+    category_example._add_product(product_example_3)
 
     assert len(category_example.products) == 3
     assert "Xiaomi 228 Turbo XXL" in category_example.products[2]
@@ -135,10 +135,11 @@ def test_invalid_add_method_product(smartphone_example_1, lawn_grass_example_1):
         smartphone_example_1 + lawn_grass_example_1
 
 
-def test_invalid_add_product(category_example):
-    invalid_product_example = "Invalid_product_example"
-    with pytest.raises(TypeError):
-        category_example.add_product(invalid_product_example)
+def test_invalid_add_product(category_example, capsys):
+    category_example.safe_add("invalid_product_example")
+    captured = capsys.readouterr()
+    assert "Ошибка: Товар должен быть в Product\nОбработка добавления товара завершена\n" in captured.out
+
 
 
 def test_mixin(capsys):

@@ -5,6 +5,35 @@ class BaseClass(ABC):
         self.name = name
         self.description = description
 
+    def safe_add(self, product):
+        """Метод для добавления в список товаров объект Product"""
+        try:
+            if not isinstance(product, Product):
+                raise TypeError("Товар должен быть в Product")
+            if product.quantity == 0:
+                raise ZeroQuantityError()
+
+        except (ZeroQuantityError, TypeError) as e:
+            print(f"Ошибка: {e}")
+
+        else:
+            self._add_product(product)
+            print(f"Товар '{product.name}' добавлен")
+
+        finally:
+            print("Обработка добавления товара завершена")
+
+    @abstractmethod
+    def _add_product(self, product: 'Product'):
+
+        pass
+
+class ZeroQuantityError(Exception):
+    """Класс исключения, исключающий добавление товара с нулевым количеством"""
+
+    def __init__(self, message="Товар с нулевым количеством не добавлен."):
+        super().__init__(message)
+
 class BaseProduct(ABC):
     """Абстрактный класс для продуктов"""
 
@@ -114,15 +143,11 @@ class Category(BaseClass):
         Category.category_count += 1
         if products:
             for product in products:
-                self.add_product(product)
+                self._add_product(product)
 
-    def add_product(self, product: Product):
-        """Метод для добавления в список товаров объект Product"""
-        if isinstance(product, Product):
-            self.__products.append(product)
-            Category.product_count += 1
-        else:
-            raise TypeError
+    def _add_product(self, product):
+        self.__products.append(product)
+        Category.product_count += 1
 
     @property
     def products(self):
@@ -203,3 +228,8 @@ class Order(BaseClass):
 
     def calculate_price(self):
         return self.product.price * self.quantity
+
+    def _add_product(self, product):
+        self.product = product
+        self.quantity = product.quantity
+        self.final_price = self.calculate_price()
