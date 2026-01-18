@@ -173,3 +173,20 @@ class LawnGrass(Product):
         self.country = country
         self.germination_period = germination_period
         self.color = color
+
+class IterProducts:
+    """Итератор, перебирающий товары одной категории"""
+    def __init__(self, category: Category):
+        self.__products = category.products
+        self.index = 0
+
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        if self.index < len(self.__products):
+            product = self.__products[self.index]
+            self.index += 1
+            return product
+        else:
+            raise StopIteration
