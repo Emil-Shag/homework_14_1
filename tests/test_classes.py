@@ -1,6 +1,6 @@
 import pytest
 
-from src.classes import Category, LawnGrass, Product, Smartphone, IterProducts, Order
+from src.classes import Category, IterProducts, LawnGrass, Order, Product, Smartphone
 
 
 @pytest.fixture(autouse=True)
@@ -141,15 +141,16 @@ def test_invalid_add_product(category_example, capsys):
     assert "Ошибка: Товар должен быть в Product\nОбработка добавления товара завершена\n" in captured.out
 
 
-
 def test_mixin(capsys):
     Product("Samsung Galaxy S23 Ultra", "256GB, Серый цвет, 200MP камера", 180000.0, 5)
     message = capsys.readouterr()
     assert message.out.strip() == "Product(Samsung Galaxy S23 Ultra, 256GB, Серый цвет, 200MP камера, 180000.0, 5)"
 
+
 def test_init_invalid_product():
     with pytest.raises(ValueError):
         Product("Бракованный товар", "Неверное количество", 1000.0, 0)
+
 
 @pytest.fixture
 def category_empty_example():
@@ -159,8 +160,10 @@ def category_empty_example():
         [],
     )
 
+
 def test_count_zero_middle_price(category_empty_example):
     assert category_empty_example.middle_price() == 0
+
 
 def test_iter_products_iteration():
     class CategoryExample:
@@ -175,6 +178,7 @@ def test_iter_products_iteration():
     result = list(iterator)
 
     assert result == products
+
 
 def test_order_initialization():
     class ProductStub:
@@ -192,6 +196,7 @@ def test_order_initialization():
     assert order.final_price == 1000000
     assert order.name == "Phone"
     assert order.description == "Good phone"
+
 
 def test_add_product_updates_order():
     class ProductStub:

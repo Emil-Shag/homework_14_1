@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 
+
 class BaseClass(ABC):
     def __init__(self, name: str, description: str):
         self.name = name
@@ -11,7 +12,7 @@ class BaseClass(ABC):
             if not isinstance(product, Product):
                 raise TypeError("Товар должен быть в Product")
             if product.quantity == 0:
-                raise ZeroQuantityError()
+                raise ZeroQuantityError("Товар с нулевым количеством не добавлен")
 
         except (ZeroQuantityError, TypeError) as e:
             print(f"Ошибка: {e}")
@@ -24,15 +25,17 @@ class BaseClass(ABC):
             print("Обработка добавления товара завершена")
 
     @abstractmethod
-    def _add_product(self, product: 'Product'):
+    def _add_product(self, product: "Product"):
 
         pass
+
 
 class ZeroQuantityError(Exception):
     """Класс исключения, исключающий добавление товара с нулевым количеством"""
 
     def __init__(self, message="Товар с нулевым количеством не добавлен."):
         super().__init__(message)
+
 
 class BaseProduct(ABC):
     """Абстрактный класс для продуктов"""
@@ -125,6 +128,7 @@ class Product(MixinPrint, BaseProduct):
             else:
                 print("Цена не изменена")
 
+
 class Category(BaseClass):
     """Класс для представления категорий"""
 
@@ -171,6 +175,7 @@ class Category(BaseClass):
         except ZeroDivisionError:
             return 0
 
+
 class Smartphone(Product):
     """Класс для категории товара: Смартфон"""
 
@@ -202,8 +207,10 @@ class LawnGrass(Product):
         self.germination_period = germination_period
         self.color = color
 
+
 class IterProducts:
     """Итератор, перебирающий товары одной категории"""
+
     def __init__(self, category: Category):
         self.__products = category.products
         self.index = 0
@@ -218,6 +225,7 @@ class IterProducts:
             return product
         else:
             raise StopIteration
+
 
 class Order(BaseClass):
     def __init__(self, product, quantity):
