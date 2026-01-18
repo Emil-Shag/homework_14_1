@@ -1,5 +1,9 @@
 from abc import ABC, abstractmethod
 
+class BaseClass(ABC):
+    def __init__(self, name: str, description: str):
+        self.name = name
+        self.description = description
 
 class BaseProduct(ABC):
     """Абстрактный класс для продуктов"""
@@ -92,7 +96,7 @@ class Product(MixinPrint, BaseProduct):
             else:
                 print("Цена не изменена")
 
-class Category:
+class Category(BaseClass):
     """Класс для представления категорий"""
 
     name: str
@@ -104,8 +108,7 @@ class Category:
 
     def __init__(self, name, description, products):
         """Метод для инициализации экземпляра класса"""
-        self.name = name
-        self.description = description
+        super().__init__(name, description)
         self.__products = []
 
         Category.category_count += 1
@@ -190,3 +193,13 @@ class IterProducts:
             return product
         else:
             raise StopIteration
+
+class Order(BaseClass):
+    def __init__(self, product, quantity):
+        super().__init__(name=product.name, description=product.description)
+        self.product = product
+        self.quantity = quantity
+        self.final_price = self.calculate_price()
+
+    def calculate_price(self):
+        return self.product.price * self.quantity
