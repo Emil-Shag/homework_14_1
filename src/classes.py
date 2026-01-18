@@ -59,14 +59,20 @@ class Product(MixinPrint, BaseProduct):
         super().__init__()
 
     @classmethod
-    def new_product(cls, dictionary):
-        result = cls(
+    def new_product(cls, dictionary, product_list=None):
+        if product_list:
+            for prod in product_list:
+                if prod.name == dictionary["name"]:
+                    prod.quantity += dictionary["quantity"]
+                    prod.price = max(dictionary["price"], prod.price)
+                    return prod
+
+        return cls(
             name=dictionary["name"],
             description=dictionary["description"],
             price=dictionary["price"],
             quantity=dictionary["quantity"],
         )
-        return result
 
     @property
     def price(self):
