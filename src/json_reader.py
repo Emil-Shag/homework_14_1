@@ -18,8 +18,3 @@ def create_objects_from_json(data):
         category["products"] = products
         categories.append(Category(**category))
     return categories
-
-if __name__ == "__main__":
-    raw_data = json_reader("../data/products.json")
-    users_data = create_objects_from_json(raw_data)
-    print(users_data)

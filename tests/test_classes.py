@@ -1,6 +1,6 @@
 import pytest
 
-from src.classes import Category, LawnGrass, Product, Smartphone
+from src.classes import Category, LawnGrass, Product, Smartphone, IterProducts, Order
 
 
 @pytest.fixture(autouse=True)
@@ -161,3 +161,53 @@ def category_empty_example():
 
 def test_count_zero_middle_price(category_empty_example):
     assert category_empty_example.middle_price() == 0
+
+def test_iter_products_iteration():
+    class CategoryExample:
+        def __init__(self, products):
+            self.products = products
+
+    products = ["apple", "banana", "orange"]
+    category = CategoryExample(products)
+
+    iterator = IterProducts(category)
+
+    result = list(iterator)
+
+    assert result == products
+
+def test_order_initialization():
+    class ProductStub:
+        def __init__(self):
+            self.name = "Phone"
+            self.description = "Good phone"
+            self.price = 100000
+
+    product = ProductStub()
+
+    order = Order(product=product, quantity=10)
+
+    assert order.product is product
+    assert order.quantity == 10
+    assert order.final_price == 1000000
+    assert order.name == "Phone"
+    assert order.description == "Good phone"
+
+def test_add_product_updates_order():
+    class ProductStub:
+        def __init__(self, name, price, quantity):
+            self.name = name
+            self.description = f"{name} desc"
+            self.price = price
+            self.quantity = quantity
+
+    product1 = ProductStub("Apple", 10, 1)
+    product2 = ProductStub("Orange", 5, 4)
+
+    order = Order(product=product1, quantity=1)
+
+    order._add_product(product2)
+
+    assert order.product is product2
+    assert order.quantity == 4
+    assert order.final_price == 20
