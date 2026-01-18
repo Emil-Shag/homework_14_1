@@ -80,11 +80,17 @@ class Product(MixinPrint, BaseProduct):
 
     @price.setter
     def price(self, value):
-        if value > 0:
-            self.__price = value
-        else:
+        if value <= 0:
             raise ValueError("Цена должна быть положительной")
 
+        if value > self.__price:
+            self.__price = value
+        elif value < self.__price:
+            user_input = input("Понизить цену? y/n: ").lower()
+            if user_input == "y":
+                self.__price = value
+            else:
+                print("Цена не изменена")
 
 class Category:
     """Класс для представления категорий"""
