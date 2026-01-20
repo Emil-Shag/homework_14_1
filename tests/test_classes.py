@@ -1,6 +1,6 @@
 import pytest
 
-from src.classes import Category, LawnGrass, Product, Smartphone
+from src.classes import Category, IterProducts, LawnGrass, Order, Product, Smartphone
 
 
 @pytest.fixture(autouse=True)
@@ -70,7 +70,7 @@ def test_init_category(category_example):
 
 def test_add_product(category_example):
     product_example_3 = Product("Xiaomi 228 Turbo XXL", "7000 GB, Розовый цвет, 17000 MP камера", 15000, 9999)
-    category_example.add_product(product_example_3)
+    category_example._add_product(product_example_3)
 
     assert len(category_example.products) == 3
     assert "Xiaomi 228 Turbo XXL" in category_example.products[2]
@@ -135,13 +135,84 @@ def test_invalid_add_method_product(smartphone_example_1, lawn_grass_example_1):
         smartphone_example_1 + lawn_grass_example_1
 
 
-def test_invalid_add_product(category_example):
-    invalid_product_example = "Invalid_product_example"
-    with pytest.raises(TypeError):
-        category_example.add_product(invalid_product_example)
+def test_invalid_add_product(category_example, capsys):
+    category_example.safe_add("invalid_product_example")
+    captured = capsys.readouterr()
+    assert "Ошибка: Товар должен быть в Product\nОбработка добавления товара завершена\n" in captured.out
 
 
 def test_mixin(capsys):
     Product("Samsung Galaxy S23 Ultra", "256GB, Серый цвет, 200MP камера", 180000.0, 5)
     message = capsys.readouterr()
     assert message.out.strip() == "Product(Samsung Galaxy S23 Ultra, 256GB, Серый цвет, 200MP камера, 180000.0, 5)"
+
+
+def test_init_invalid_product():
+    with pytest.raises(ValueError):
+        Product("Бракованный товар", "Неверное количество", 1000.0, 0)
+
+
+@pytest.fixture
+def category_empty_example():
+    return Category(
+        "Смартфоны",
+        "Смартфоны, как средство не только коммуникации, но и получения дополнительных функций для удобства жизни",
+        [],
+    )
+
+
+def test_count_zero_middle_price(category_empty_example):
+    assert category_empty_example.middle_price() == 0
+
+
+def test_iter_products_iteration():
+    class CategoryExample:
+        def __init__(self, products):
+            self.products = products
+
+    products = ["apple", "banana", "orange"]
+    category = CategoryExample(products)
+
+    iterator = IterProducts(category)
+
+    result = list(iterator)
+
+    assert result == products
+
+
+def test_order_initialization():
+    class ProductStub:
+        def __init__(self):
+            self.name = "Phone"
+            self.description = "Good phone"
+            self.price = 100000
+
+    product = ProductStub()
+
+    order = Order(product=product, quantity=10)
+
+    assert order.product is product
+    assert order.quantity == 10
+    assert order.final_price == 1000000
+    assert order.name == "Phone"
+    assert order.description == "Good phone"
+
+
+def test_add_product_updates_order():
+    class ProductStub:
+        def __init__(self, name, price, quantity):
+            self.name = name
+            self.description = f"{name} desc"
+            self.price = price
+            self.quantity = quantity
+
+    product1 = ProductStub("Apple", 10, 1)
+    product2 = ProductStub("Orange", 5, 4)
+
+    order = Order(product=product1, quantity=1)
+
+    order._add_product(product2)
+
+    assert order.product is product2
+    assert order.quantity == 4
+    assert order.final_price == 20
